@@ -27,6 +27,8 @@ router.get('/candidates',function(req,res){
 
         
     }
+    count()
+    console.log(arr1)
     res.send(arr1)
 })
 
