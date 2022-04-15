@@ -8,4 +8,4 @@ const publisherSchema = new mongoose.Schema({
     
 },{timestamps: true})
 
-module.exports = mongoose.model('NewPublisher',publisherSchema) //newPublishers
+module.exports = mongoose.model('NewPublisher',publisherSchema) //newpublishers
