@@ -1,5 +1,6 @@
 const bookModels = require('../models/bookModels')
 const authorModels = require('../models/authorModel')
+const publisherModels = require('../models/publisherModel')
 
 const createBook = async function (req, res) {
     let data = req.body
@@ -12,6 +13,13 @@ const createBook = async function (req, res) {
        let dataSaved = await authorModels.create(data)
        res.send(  {  msg : dataSaved} )
     };
+
+    const createPublisher = async function (req, res) {
+      let data = req.body
+      let dataSaved = await publisherModels.create(data)
+      res.send(  {  msg : dataSaved} )
+   };
+
    
 const getCBBooks = async function(req,res){
     const bookList =await authorModels.find({author_Name:"Chetan Bhagat"})
@@ -46,6 +54,7 @@ const authorNames = async function(req,res){
 };     
        module.exports.createBook=createBook
        module.exports.createAuthor=createAuthor
+       module.exports.publisherModels=publisherModels
        module.exports.getCBBooks=getCBBooks
        module.exports.getTwoState=getTwoState
        module.exports.authorNames=authorNames
