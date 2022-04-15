@@ -38,9 +38,9 @@ const authorNames = async function(req,res){
    for(i=0;i<array.length;i++){
        let x= array[i]
        const xyz =await authorModels.find( {author_id:x} ).select({ author_name :1,_id:0})
-       console.log(xyz)
        arr.push(xyz)
    }
+
    const authorNames= arr.flat()
    res.send( { msg : authorNames } )
 };     
