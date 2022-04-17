@@ -10,8 +10,8 @@ const allControllers = require('../controllers/allController')
    router.post('/createAuthor',allControllers.createAuthor)
    router.post('/createPublisher',allControllers.createPublisher)
    router.get('/getAllBooks',allControllers.getAllBooks)
+   router.put('/books',allControllers.newBook)
+   router.put('/updatePrice',allControllers.updatePrice)
  
-  
-  
-  
+   
 module.exports = router;

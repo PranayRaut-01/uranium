@@ -38,13 +38,25 @@ const publisherModels = require('../models/publisherModel')
    };
    
 const getAllBooks = async function(req,res){
+   
    let specificBook = await bookModels.find().populate('author').populate('publisher')
    res.send({data: specificBook})
 };
 
- 
+   
+const newBook = async function(req,res){
+   let system = await publisherModels.find({$or:[{name:"Penguin"},{name:"HarperCollins"}]}).select({_id:1})  
+   let updatedBooks = await bookModels.updateMany({$or:[{publisher:system[0]},{publisher:system[1]}]},{$set:{isHardCover:true},new:true})
+   res.send({data: updatedBooks})
+};
+const updatePrice = async function(req,res){
+   let data = await authorModels.find({rating:{$gt:3.5}}).select({_id:1})
+   let updatedPrice = await bookModels.updateMany({author:data},{$inc:{price:10}},{new:true})
+   res.send({data: updatedPrice})
+};
        module.exports.createBook=createBook
        module.exports.createAuthor=createAuthor
        module.exports.createPublisher=createPublisher
        module.exports.getAllBooks=getAllBooks
-      
+       module.exports.newBook=newBook
+       module.exports.updatePrice=updatePrice
