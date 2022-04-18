@@ -1,6 +1,6 @@
 const batchModels = require('../models/batchModel')
 const developerModels = require('../models/developerModel')
-//const publisherModels = require('../models/publisherModel')
+
 
 
 
@@ -15,27 +15,6 @@ const developerModels = require('../models/developerModel')
       let dataSaved = await developerModels.create(data)
       res.send(  {  msg : dataSaved} )
    };
-
-   // const createBook = async function (req, res) {
-   //    let data = req.body.author
-   //    let data1= req.body.publisher
-   //    if(data){
-   //       if(data1){
-   //                let presentAuthor= await authorModels.find({_id:data})
-   //                let presentPublisher= await publisherModels.find({_id:data1})
-   //                if(presentAuthor.length!==0){
-   //                   if(presentPublisher.length!==0){
-   //                     let dataSaved = await bookModels.create(req.body)
-   //                     res.send(  {  msg : dataSaved} )
-   //                   }else
-   //                   res.send({msg:"send valid publisher id"})
-   //                }else
-   //                res.send({mgs:"send valid author id"})
-   //       }else
-   //                res.send({msg:"publisher id is required"})
-   // }else 
-   // res.send({msg:"author id is required"})
-   // };
    
 const getScholershipDevs = async function(req,res){
    

@@ -13,9 +13,6 @@ const developerSchema = new mongoose.Schema({
         type: ObjectId,
         ref:"Batch"
         }
-
-    
-
 },{timestamps: true})
 
 module.exports = mongoose.model('Developer',developerSchema) //developers
