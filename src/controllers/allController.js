@@ -1,62 +1,67 @@
-const bookModels = require('../models/bookModels')
-const authorModels = require('../models/authorModel')
-const publisherModels = require('../models/publisherModel')
+const batchModels = require('../models/batchModel')
+const developerModels = require('../models/developerModel')
+//const publisherModels = require('../models/publisherModel')
 
 
 
- const createAuthor = async function (req, res) {
+ const createBatch = async function (req, res) {
        let data = req.body
-       let dataSaved = await authorModels.create(data)
+       let dataSaved = await batchModels.create(data)
        res.send(  {  msg : dataSaved} )
     };
 
-    const createPublisher = async function (req, res) {
+    const createDeveloper = async function (req, res) {
       let data = req.body
-      let dataSaved = await publisherModels.create(data)
+      let dataSaved = await developerModels.create(data)
       res.send(  {  msg : dataSaved} )
    };
 
-   const createBook = async function (req, res) {
-      let data = req.body.author
-      let data1= req.body.publisher
-      if(data){
-         if(data1){
-                  let presentAuthor= await authorModels.find({_id:data})
-                  let presentPublisher= await publisherModels.find({_id:data1})
-                  if(presentAuthor.length!==0){
-                     if(presentPublisher.length!==0){
-                       let dataSaved = await bookModels.create(req.body)
-                       res.send(  {  msg : dataSaved} )
-                     }else
-                     res.send({msg:"send valid publisher id"})
-                  }else
-                  res.send({mgs:"send valid author id"})
-         }else
-                  res.send({msg:"publisher id is required"})
-   }else 
-   res.send({msg:"author id is required"})
-   };
+   // const createBook = async function (req, res) {
+   //    let data = req.body.author
+   //    let data1= req.body.publisher
+   //    if(data){
+   //       if(data1){
+   //                let presentAuthor= await authorModels.find({_id:data})
+   //                let presentPublisher= await publisherModels.find({_id:data1})
+   //                if(presentAuthor.length!==0){
+   //                   if(presentPublisher.length!==0){
+   //                     let dataSaved = await bookModels.create(req.body)
+   //                     res.send(  {  msg : dataSaved} )
+   //                   }else
+   //                   res.send({msg:"send valid publisher id"})
+   //                }else
+   //                res.send({mgs:"send valid author id"})
+   //       }else
+   //                res.send({msg:"publisher id is required"})
+   // }else 
+   // res.send({msg:"author id is required"})
+   // };
    
-const getAllBooks = async function(req,res){
+const getScholershipDevs = async function(req,res){
    
-   let specificBook = await bookModels.find().populate('author').populate('publisher')
+   let specificBook = await developerModels.find({percentage:{$gte:70},gender:"female"})
    res.send({data: specificBook})
 };
-
+const getDevs = async function(req,res){
+   let data= req.query.percentage
+   let data1 = req.query.program
+   let specificPercent = await developerModels.find({percentage:{$gte:data}})
+   let specificDev = await batchModels.find({Name:data1}).select({_id:1})
+   let specificId = specificDev[0]._id
+   let arr1 = []
+for (let i = 0; i < specificPercent.length; i++) {
+   const element = specificPercent[i];
+        if(JSON.stringify(element.batch)===JSON.stringify(specificId)){
+              arr1.push(element)
+         }else 
+              continue; 
+}
+   res.send({data: arr1})
+};
    
-const newBook = async function(req,res){
-   let system = await publisherModels.find({$or:[{name:"Penguin"},{name:"HarperCollins"}]}).select({_id:1})  
-   let updatedBooks = await bookModels.updateMany({$or:[{publisher:system[0]},{publisher:system[1]}]},{$set:{isHardCover:true},new:true})
-   res.send({data: updatedBooks})
-};
-const updatePrice = async function(req,res){
-   let data = await authorModels.find({rating:{$gt:3.5}}).select({_id:1})
-   let updatedPrice = await bookModels.updateMany({author:data},{$inc:{price:10}},{new:true})
-   res.send({data: updatedPrice})
-};
-       module.exports.createBook=createBook
-       module.exports.createAuthor=createAuthor
-       module.exports.createPublisher=createPublisher
-       module.exports.getAllBooks=getAllBooks
-       module.exports.newBook=newBook
-       module.exports.updatePrice=updatePrice
+
+       module.exports.createBatch=createBatch
+       module.exports.createDeveloper=createDeveloper
+       module.exports.getScholershipDevs=getScholershipDevs
+        module.exports.getDevs=getDevs
+    

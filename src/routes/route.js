@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const bookModels = require('../models/bookModels')
-const authorModels = require('../models/authorModel')
-const publisherModels = require('../models/publisherModel')
-const allControllers = require('../controllers/allController')
+const batchModels = require('../models/batchModel')
+const developerModels = require('../models/developerModel')
+// const publisherModels = require('../models/publisherModel')
+ const allControllers = require('../controllers/allController')
 
 
-   router.post('/createBook',allControllers.createBook)
-   router.post('/createAuthor',allControllers.createAuthor)
-   router.post('/createPublisher',allControllers.createPublisher)
-   router.get('/getAllBooks',allControllers.getAllBooks)
-   router.put('/books',allControllers.newBook)
-   router.put('/updatePrice',allControllers.updatePrice)
+   router.post('/createBatch',allControllers.createBatch)
+   router.post('/createDeveloper',allControllers.createDeveloper)
+   // router.post('/createPublisher',allControllers.createPublisher)
+   router.get('/scholarship-developers',allControllers.getScholershipDevs)
+    router.get('/getDevs',allControllers.getDevs)
+   // router.put('/updatePrice',allControllers.updatePrice)
  
    
 module.exports = router;
