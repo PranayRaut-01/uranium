@@ -9,7 +9,7 @@ const developerModels = require('../models/developerModel')
    router.post('/createDeveloper',allControllers.createDeveloper)
    router.get('/scholarship-developers',allControllers.getScholershipDevs)
     router.get('/getDevs',allControllers.getDevs)
-  
+    router.get('/basicRoute',allControllers.basicRoute)
  
    
 module.exports = router;

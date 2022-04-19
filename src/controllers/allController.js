@@ -1,6 +1,12 @@
 const batchModels = require('../models/batchModel')
 const developerModels = require('../models/developerModel')
 
+const basicRoute =  function (req, res) {
+ 
+   res.send(  {  msg : "this is basic api"} )
+   
+};
+
 
 
 
@@ -9,6 +15,7 @@ const developerModels = require('../models/developerModel')
        let dataSaved = await batchModels.create(data)
        res.send(  {  msg : dataSaved} )
     };
+
 
     const createDeveloper = async function (req, res) {
       let data = req.body
@@ -43,4 +50,4 @@ for (let i = 0; i < specificPercent.length; i++) {
        module.exports.createDeveloper=createDeveloper
        module.exports.getScholershipDevs=getScholershipDevs
         module.exports.getDevs=getDevs
-    
+        module.exports.basicRoute=basicRoute
