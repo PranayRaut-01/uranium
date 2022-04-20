@@ -3,20 +3,12 @@ var bodyParser = require('body-parser');
 const{default: mongoose}= require('mongoose')
 
 const route = require('./routes/route.js');
-const moment = require('moment');
+
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(
-    function(req,res,next){
-    console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
-    console.log(req.ip)
-    console.log(req.originalUrl)
-    next();
-});
 
 app.use('/', route);
 mongoose.connect('mongodb+srv://pattamu:iKHwECgQCaYNVpge@sandeepcluster.9rzkh.mongodb.net/Pranay123-DB',{

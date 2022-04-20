@@ -1,15 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const batchModels = require('../models/batchModel')
-const developerModels = require('../models/developerModel')
+const productModel = require('../models/productModel')
+const userModels = require('../models/userModel')
+const orderModels = require('../models/orderModel')
  const allControllers = require('../controllers/allController')
+ const middleware= require('../middleware/allMiddleware')
 
 
-   router.post('/createBatch',allControllers.createBatch)
-   router.post('/createDeveloper',allControllers.createDeveloper)
-   router.get('/scholarship-developers',allControllers.getScholershipDevs)
-    router.get('/getDevs',allControllers.getDevs)
-    router.get('/basicRoute',allControllers.basicRoute)
+   router.post('/createProduct',allControllers.createProduct)
+    router.post('/createUser',middleware.mid1,allControllers.createUser)
+    router.post('/createOrder',middleware.mid1,allControllers.createOrder)
+  //  router.get('/scholarship-developers',allControllers.getScholershipDevs)
+  //   router.get('/getDevs',allControllers.getDevs)
+  //   router.get('/basicRoute',allControllers.basicRoute)
  
    
 module.exports = router;
