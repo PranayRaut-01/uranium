@@ -41,7 +41,6 @@ if(dataSaved){
          res.send(dataSaved2)
       }else{
          let userBalance= await userModel.findById(data)
-         console.log(userBalance)
          let balance= userBalance.balance
          let productAmount= await productModel.findById(data1)
          let amount = productAmount.price
