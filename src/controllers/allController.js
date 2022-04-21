@@ -1,74 +1,70 @@
-const productModel = require('../models/productModel')
 const userModel = require('../models/userModel')
-const orderModel = require('../models/orderModel');
-const moment = require('moment');
+const jwt = require('jsonwebtoken');
 
- const createProduct = async function (req, res) {
+   const createUser = async function (req, res) {
        let data = req.body
-       let dataSaved = await productModel.create(data)
+       let dataSaved = await userModel.create(data)
        res.send(  {  msg : dataSaved} )
     };
 
-
-    const createUser = async function (req, res) {
-      let data = req.body
-      let data1=req.headers.isfreeappuser
-      data['isFreeAppUser']=data1
-      let data2 = data
-      let dataSaved = await userModel.create(data2)
-      res.send(  {  msg : dataSaved} )
-   };
-
-   const createOrder = async  function (req, res) {
- let data = req.body.userId
- let data1= req.body.productId
- let body = req.body
- 
- let dataSaved = await userModel.find({_Id:data})
- let dataSaved1 = await productModel.find({_Id:data1})
-if(dataSaved){
-  
-   if(dataSaved1){
+   const login = async function (req, res) {
+      let userName = req.body.emailId;
+      let password = req.body.password;
     
-      if(req.headers.isfreeappuser=='true'){
-      
-         body['isFreeAppUser']=true
-         body['amount']=0
-         body['date']=moment().format('L')
+      let user = await userModel.findOne({ emailId: userName, password: password });
+      if (!user)
+        return res.send({
+          status: false,
+          msg: "username or the password is not valid",
+        });
+      let token = jwt.sign(
+        {
+          userId: user._id.toString(),
+          batch: "Uranium",
+          organisation: "FunctionUp",
+        },
+        "Best-Cohort"
+      );
+      //res.setHeader("x-auth-token", token);
+      res.send({ status: true, data: token });
+    };
+
+    const getUserData = async function (req, res) {  
+      let userId = req.params.userId;
+      let userDetails = await userModel.findById(userId);
+      if (!userDetails)
+        return res.send({ status: false, msg: "No such user exists" });
+    
+      res.send({ status: true, data: userDetails });
+    };
+
+
+    const updateUser = async function (req, res) {
         
-         let data4 = body
-         let dataSaved2 = await orderModel.create(data4)
-         res.send(dataSaved2)
-      }else{
-         let userBalance= await userModel.findById(data)
-         console.log(userBalance)
-         let balance= userBalance.balance
-         let productAmount= await productModel.findById(data1)
-         let amount = productAmount.price
+        let userId = req.params.userId;
+        let user = await userModel.findById(userId);
+       
+        if (!user) {
+          return res.send("No such user exists");
+        }
+      
+        let userData = req.body;
+        let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData,{new:true});
+        res.send({ status: true, data: updatedUser });
+      };
 
-         if(balance<amount){
-            res.send({msg:'insufficient balance'})
-            
-         }else{
-            let userBalanceUpdate= await userModel.findByIdAndUpdate(data,{balance:(balance-amount)},{new:true})
-            body['isFreeAppUser']=false
-            body['amount']=amount
-            body['date']=moment().format('L')
-            let body1=body
-            let purchaseOrder = await orderModel.create(body1)
-            res.send({msg:purchaseOrder})
-         }
+      const deleteUser= async function(req,res){
+        let userId = req.params.userId;
+        let user = await userModel.findById(userId);
+        if (!user) {
+          return res.send("No such user exists");
+        }
+        let deletedUser = await userModel.updateOne({ _id: userId }, {isDeleted:true});
+        res.send({"msg":"your data is deleted"})
       }
-   }else
-   res.send({msg:"productId is invalid"})
 
-}else
-res.send({msg: "userId is invalid"})
-     
-};
-   
-
-       module.exports.createProduct=createProduct
+       module.exports.login=login
        module.exports.createUser=createUser
-       module.exports.createOrder=createOrder
-   
+       module.exports.getUserData=getUserData
+       module.exports.updateUser=updateUser
+       module.exports.deleteUser=deleteUser

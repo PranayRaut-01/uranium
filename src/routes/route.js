@@ -1,18 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const productModel = require('../models/productModel')
 const userModels = require('../models/userModel')
-const orderModels = require('../models/orderModel')
  const allControllers = require('../controllers/allController')
- const middleware= require('../middleware/allMiddleware')
+ const middleware= require('../middleware/auth')
 
 
-   router.post('/createProduct',allControllers.createProduct)
-    router.post('/createUser',middleware.mid1,allControllers.createUser)
-    router.post('/createOrder',middleware.mid1,allControllers.createOrder)
-  //  router.get('/scholarship-developers',allControllers.getScholershipDevs)
-  //   router.get('/getDevs',allControllers.getDevs)
-  //   router.get('/basicRoute',allControllers.basicRoute)
- 
-   
+    router.post('/createUser',allControllers.createUser)
+    router.post('/login',allControllers.login)
+    router.get('/users/:userId',middleware.mid1,allControllers.getUserData)
+    router.put('/users/:userId',middleware.mid1,allControllers.updateUser)
+    router.delete('/users/:userId',middleware.mid1,allControllers.deleteUser)
+  
 module.exports = router;
